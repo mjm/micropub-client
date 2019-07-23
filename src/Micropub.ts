@@ -7,18 +7,18 @@ export interface MicropubOptions {
   token: string
 }
 
-class Micropub {
+export class Micropub {
   private url: string
   private token: string
 
   constructor(options: MicropubOptions) {
-    this.url = options.url.endsWith("/") ? options.url : `${options.url}/`
+    this.url = options.url
     this.token = options.token
   }
 
   async getConfig(): Promise<MicropubConfig> {
     const params = new URLSearchParams({ q: "config" })
-    const response = await fetch(this.url + params.toString(), {
+    const response = await fetch(`${this.url}?${params.toString()}`, {
       headers: this.defaultHeaders,
     })
     const body = await response.json()
@@ -31,5 +31,3 @@ class Micropub {
     }
   }
 }
-
-export default Micropub
